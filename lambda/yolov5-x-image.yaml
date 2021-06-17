@@ -1,0 +1,23 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+Description: An AWS Serverless Specification template describing your function.
+Resources:
+  paddleocr:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Handler: lambda_function.lambda_handler
+      Runtime: python3.8
+      CodeUri: .
+      Description: ''
+      MemorySize: 128
+      Timeout: 3
+      Role: 'arn:aws:iam::847380964353:role/service-role/paddleocr-role-y5jj35vn'
+      Events:
+        Api1:
+          Type: Api
+          Properties:
+            Path: /paddleocr
+            Method: ANY
+      Layers:
+        - 'arn:aws:lambda:us-east-1:847380964353:layer:requests_toolbelt:1'
+        - 'arn:aws:lambda:us-east-1:847380964353:layer:sagemaker:1'

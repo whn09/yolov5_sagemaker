@@ -1,17 +1,3 @@
-# locally
-# docker run -v $(pwd)/model:/opt/ml/model -p 8080:8080 yolov5 serve
-import requests
-import json
-from io import BytesIO
-url='http://localhost:8080/invocations'
-image_uri = 'data/images/inference/bus.jpg'
-img = BytesIO(open(image_uri, 'rb').read())
-payload = img
-r = requests.post(url,data=payload,headers={'content-type': 'application/x-image'})
-print(r.json())
-
-# on sagemaker
-# python create_endpoint
 import boto3
 from botocore.config import Config
 from boto3.session import Session
@@ -25,9 +11,15 @@ config = Config(
 )
 
 def infer(input_image):
+    bucket = 'sagemaker-cn-north-1-813110655017'
     image_uri = input_image
-    img = BytesIO(open(image_uri, 'rb').read())
-    payload = img
+    test_data = {
+        'bucket' : bucket,
+        'image_uri' : image_uri,
+        'content_type': "application/json",
+    }
+    payload = json.dumps(test_data)
+    print(payload)
 
     sagemaker_runtime_client = boto3.client('sagemaker-runtime', config=config)
     session = Session(sagemaker_runtime_client)
@@ -35,10 +27,17 @@ def infer(input_image):
 #     runtime = session.client("runtime.sagemaker",config=config)
     response = sagemaker_runtime_client.invoke_endpoint(
         EndpointName='yolov5',
-        ContentType="application/x-image",
+        ContentType="application/json",
         Body=payload)
 
     result = json.loads(response["Body"].read())
     print (result)
+    return result
 
-infer('data/images/inference/bus.jpg')
+def lambda_handler(event, context):
+    # TODO implement
+    result = infer('data/images/inference/bus.jpg')
+    return {
+        'statusCode': 200,
+        'body': json.dumps(result, ensure_ascii=False)
+    }
