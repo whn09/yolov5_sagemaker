@@ -5,6 +5,7 @@ import json
 import io
 import base64
 from requests_toolbelt.multipart import decoder
+from PIL import Image
 
 config = Config(
     read_timeout=120,
@@ -40,6 +41,12 @@ def lambda_handler(event, context):
         binary_content.append(part.content)
 
     image = io.BytesIO(binary_content[0])
+    
+    # convert PNG to JPG
+    im = Image.open(image).convert('RGB')
+    buf = io.BytesIO()
+    im.save(buf, format='JPEG')
+    image = buf.getvalue()
     
     result = infer(image)
     return {
