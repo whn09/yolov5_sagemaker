@@ -16,7 +16,7 @@ config = Config(
 
 def infer(input_image):
     payload = input_image
-    print('payload:', payload)
+    #print('payload:', payload)
 
     sagemaker_runtime_client = boto3.client('sagemaker-runtime', config=config)
     session = Session(sagemaker_runtime_client)
