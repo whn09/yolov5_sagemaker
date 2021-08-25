@@ -42,11 +42,11 @@ def lambda_handler(event, context):
 
     image = io.BytesIO(binary_content[0])
     
-    # convert PNG to JPG
-    im = Image.open(image).convert('RGB')
-    buf = io.BytesIO()
-    im.save(buf, format='JPEG')
-    image = buf.getvalue()
+#     # convert PNG to JPG
+#     im = Image.open(image).convert('RGB')
+#     buf = io.BytesIO()
+#     im.save(buf, format='JPEG')
+#     image = buf.getvalue()
     
     result = infer(image)
     return {
