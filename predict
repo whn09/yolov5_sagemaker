@@ -7,5 +7,6 @@ name=$(cat $FP_PARA | jq -r '.NAME')
 output=$(cat $FP_PARA | jq -r '.FP_OUTPUT')
 echo $weight
 echo $img
+mkdir -p /opt/code/runs/detect/$name
 python /opt/yolov5/detect.py --source $img --weights $weight --conf $conf --name $name --save-txt
-cp -r /opt/code/runs/detect/$name $output
+cp -r /opt/ml/code/runs/detect/$name $output
