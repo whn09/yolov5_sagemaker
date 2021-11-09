@@ -23,8 +23,8 @@ import torch.backends.cudnn as cudnn
 from models.experimental import attempt_load
 from utils.datasets import LoadStreams, LoadImages
 from utils.general import check_img_size, check_requirements, check_imshow, non_max_suppression, apply_classifier, \
-    scale_coords, xyxy2xywh, strip_optimizer, set_logging, increment_path, save_one_box
-from utils.plots import colors, plot_one_box
+    scale_coords, xyxy2xywh, strip_optimizer, set_logging, increment_path
+from utils.plots import colors
 from utils.torch_utils import select_device, load_classifier, time_sync
 
 
@@ -98,7 +98,7 @@ def detect(source):
     dataset = LoadImages(source, img_size=imgsz, stride=stride)
     
     t0 = time.time()
-    for path, img, im0s, vid_cap in dataset:
+    for path, img, im0s, vid_cap, s in dataset:
         img = torch.from_numpy(img).to(device)
         img = img.half() if half else img.float()  # uint8 to fp16/32
         img /= 255.0  # 0 - 255 to 0.0 - 1.0
