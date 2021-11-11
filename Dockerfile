@@ -18,7 +18,7 @@ RUN pip install -r /opt/yolov5/requirements.txt
 RUN apt-get install ffmpeg libsm6 libxext6 -y
 
 ### Install nginx notebook
-RUN apt-get -y update && apt-get install -y --no-install-recommends \
+RUN apt-get install -y --no-install-recommends \
          wget \
          nginx \
          ca-certificates \
