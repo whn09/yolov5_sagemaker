@@ -16,4 +16,6 @@ Refer to [yolov5_byoc.ipynb](yolov5_byoc.ipynb), please note that SageMaker loca
 
 ## TODO List
 
-* Model deployement
+* Distributed training
+* Model multiprocessing deployement
+* Benchmark
