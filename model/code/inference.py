@@ -5,7 +5,8 @@ import numpy as np
 # device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 def model_fn(model_dir):
-    model = torch.hub.load('ultralytics/yolov5', 'custom', os.path.join(model_dir, 'best.pt'))
+    os.system('pip install smdebug')
+    model = torch.hub.load('ultralytics/yolov5', 'custom', os.path.join(model_dir, 'best.pt'), force_reload=True)
 #     model.to(device)
 #     model.eval()
     return model
