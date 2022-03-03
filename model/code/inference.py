@@ -1,8 +1,12 @@
 import os
+import time
 import torch
 import numpy as np
 
+imgsz = 640
+
 # device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+
 
 def model_fn(model_dir):
     os.system('pip install smdebug')
@@ -10,6 +14,7 @@ def model_fn(model_dir):
 #     model.to(device)
 #     model.eval()
     return model
+
 
 def input_fn(request_body, request_content_type):
 #     print('[DEBUG] request_body:', type(request_body))
@@ -28,17 +33,30 @@ def input_fn(request_body, request_content_type):
         # if the content type is not supported.  
         return request_body
 
+    
 def predict_fn(input_data, model):
 #     print('[DEBUG] input_data type:', type(input_data), input_data.shape)
 #     with torch.no_grad():
 #         return model(input_data.to(device))
-    pred = model(input_data, size=640)
+    pred = model(input_data, size=imgsz)
+#     print('[DEBUG] pred:', pred, pred.xywhn)
+#     pred.print()
+    pred = pred.xywhn[0]
 #     print('[DEBUG] pred:', pred)
     
-    result = pred.pred[0].numpy()
+    result = pred.numpy()
+            
 #     print('[DEBUG] result:', result)
     
     return result
 
+
 # def output_fn(prediction, content_type):
 #     pass
+
+
+if __name__ == '__main__':
+    import cv2
+    input_data = cv2.imread('../../data/images/inference/bus.jpg')
+    model = model_fn('../')
+    result = predict_fn(input_data, model)
