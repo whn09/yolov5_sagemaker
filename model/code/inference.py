@@ -60,3 +60,4 @@ if __name__ == '__main__':
     input_data = cv2.imread('../../data/images/inference/bus.jpg')
     model = model_fn('../')
     result = predict_fn(input_data, model)
+    print(result)
